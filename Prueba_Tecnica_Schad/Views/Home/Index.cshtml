@@ -1,12 +1,86 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 	<h1 class="h3 mb-0 text-gray-800">Welcome</h1>
 </div>
-<div class="text-center">
-	
 
-	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table id="mytabla" class="table table-bordered dataTable">
+
+				<thead>
+
+					<tr>
+
+						<th>Cliente</th>
+
+						<th>Operación</th>
+
+						<th>Monto</th>
+
+						<th>Balance</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody>
+
+					<tr>
+
+						<td>Jhon Doe</td>
+
+						<td>Depósito</td>
+
+						<td>$2,500.00</td>
+
+						<td>$2,500.00</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Mark Finn</td>
+
+						<td>Depósito</td>
+
+						<td>$5,000.00</td>
+
+						<td>$5,000.00</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Sam Smith</td>
+
+						<td>Depósito</td>
+
+						<td>$3,000.00</td>
+
+						<td>$3,000.00</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+	@section Scripts{
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#mytabla').DataTable();
+			});
+		</script>
+
+
+	}
