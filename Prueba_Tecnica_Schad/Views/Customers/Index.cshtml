@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Prueba_Tecnica_Schad.Models.Invoice>
+﻿@model IEnumerable<Prueba_Tecnica_Schad.Models.Customers>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,17 +20,16 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.CustomerId)
+                            @Html.DisplayNameFor(model => model.CustName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.TotalItbis)
+                            @Html.DisplayNameFor(model => model.Adress)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.SubTotal)
+                            @Html.DisplayNameFor(model => model.Status)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Total)
-                        </th>
+                           Customer Type
                         <th></th>
                     </tr>
                 </thead>
@@ -39,22 +38,32 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CustomerId)
+                                @Html.DisplayFor(modelItem => item.CustName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.TotalItbis)
+                                @Html.DisplayFor(modelItem => item.Adress)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.SubTotal)
+                               	@{
+									string Mensaje = "";
+									if (item.Status)
+									{
+										Mensaje = "Activo";
+									}
+									else
+									{
+										Mensaje = "Inactivo";
+									}
+								
+								}
+								@Mensaje
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Total)
+                                @Html.DisplayFor(modelItem => item.CustomerTypes.Description)
                             </td>
-                            <td>
+                            <td>                               
                                 <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" class="text-white">Edit</a>
                                 <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" class="text-white">Delete</a>
-                                <a type="button" class="btn btn-danger" asp-action="Details" asp-route-id="@item.Id" class="text-white">Details</a> 
-                                
                             </td>
                         </tr>
                     }

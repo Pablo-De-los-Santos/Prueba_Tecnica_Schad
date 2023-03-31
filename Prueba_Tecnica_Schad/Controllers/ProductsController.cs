@@ -22,9 +22,13 @@ namespace Prueba_Tecnica_Schad.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.Products != null ? 
+        
+                return _context.Products != null ? 
                           View(await _context.Products.ToListAsync()) :
                           Problem("Entity set 'PtsDbContext.Products'  is null.");
+
+        
+              
         }
 
         // GET: Products/Details/5
@@ -60,6 +64,10 @@ namespace Prueba_Tecnica_Schad.Controllers
         {
             if (ModelState.IsValid)
             {
+                product.ItbsPercentage =  product.ItbsPercentage / 100;
+
+
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
