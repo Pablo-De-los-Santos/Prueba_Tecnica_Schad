@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Prueba_Tecnica_Schad.Models.Customers>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a type="button" class="btn btn-primary" asp-action="Create" class="text-white">Create New</a>
+
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"></h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="mytabla" class="table table-bordered dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CustName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Adress)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                           Customer Type
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Adress)
+                            </td>
+                            <td>
+                               	@{
+									string Mensaje = "";
+									if (item.Status)
+									{
+										Mensaje = "Activo";
+									}
+									else
+									{
+										Mensaje = "Inactivo";
+									}
+								
+								}
+								@Mensaje
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerTypes.Description)
+                            </td>
+                            <td>                               
+                                <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id" class="text-white">Edit</a>
+                                <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" class="text-white">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#mytabla').DataTable();
+        });
+    </script>
+
+
+	}
