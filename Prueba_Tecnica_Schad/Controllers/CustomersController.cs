@@ -7,107 +7,111 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prueba_Tecnica_Schad.Context;
 using Prueba_Tecnica_Schad.Models;
+using Prueba_Tecnica_Schad.Models.DTO;
 
 namespace Prueba_Tecnica_Schad.Controllers
 {
-    public class InvoicesController : Controller
+    public class CustomersController : Controller
     {
         private readonly PtsDbContext _context;
 
-        public InvoicesController(PtsDbContext context)
+        public CustomersController(PtsDbContext context)
         {
             _context = context;
         }
 
-        // GET: Invoices
+        // GET: Customers
         public async Task<IActionResult> Index()
         {
-              return _context.Invoice != null ? 
-                          View(await _context.Invoice.ToListAsync()) :
-                          Problem("Entity set 'PtsDbContext.Invoice'  is null.");
+              return _context.Customers != null ? 
+                          View(await _context.Customers.Include(x=>x.CustomerTypes).ToListAsync()) :
+                          Problem("Entity set 'PtsDbContext.Customers'  is null.");
         }
 
-        // GET: Invoices/Details/5
+        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Invoice == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
 
-            var invoice = await _context.Invoice.Include(x => x.InvoiceDetail)
+            var customers = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (invoice == null)
+            if (customers == null)
             {
                 return NotFound();
             }
 
-            return View(invoice);
+            return View(customers);
         }
 
-        // GET: Invoices/Create
-        public IActionResult Create()
+        // GET: Customers/Create
+        public async Task<IActionResult> CreateAsync()
         {
-            return View();
+            CreateCustemerDTO customer = new CreateCustemerDTO { };
+
+            customer.CustomerTypes = await _context.CustomerTypes.ToListAsync();
+
+            return View(customer);
         }
 
-        // POST: Invoices/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,TotalItbis,SubTotal,Total")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("Id,CustName,Adress,Status,CustomerTypeId")] Customers customers)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(invoice);
+          
+                _context.Add(customers);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(invoice);
+            
+            return View(customers);
         }
 
-        // GET: Invoices/Edit/5
+        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Invoice == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
+            CreateCustemerDTO customer = new CreateCustemerDTO { };
 
-            var invoice = await _context.Invoice.FindAsync(id);
-			invoice.InvoiceDetail = (List<InvoiceDetail>)_context.InvoiceDetails.Where(c => c.InvoiceId == id);
+            customer.CustomerTypes = await _context.CustomerTypes.ToListAsync();
 
-
-            if (invoice == null)
+            customer.Customers = await _context.Customers.FindAsync(id);
+            if (customer.Customers == null)
             {
                 return NotFound();
             }
-            return View(invoice);
+            return View(customer);
         }
 
-        // POST: Invoices/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,TotalItbis,SubTotal,Total")] Invoice invoice)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustName,Adress,Status,CustomerTypeId")] Customers customers)
         {
-            if (id != invoice.Id)
+            if (id != customers.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+
+            
                 try
                 {
-                    _context.Update(invoice);
+                    _context.Update(customers);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InvoiceExists(invoice.Id))
+                    if (!CustomersExists(customers.Id))
                     {
                         return NotFound();
                     }
@@ -117,50 +121,50 @@ namespace Prueba_Tecnica_Schad.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(invoice);
+           
+            return View(customers);
         }
 
-        // GET: Invoices/Delete/5
+        // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Invoice == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
 
-            var invoice = await _context.Invoice
+            var customers = await _context.Customers.Include(x=>x.CustomerTypes)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (invoice == null)
+            if (customers == null)
             {
                 return NotFound();
             }
 
-            return View(invoice);
+            return View(customers);
         }
 
-        // POST: Invoices/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Invoice == null)
+            if (_context.Customers == null)
             {
-                return Problem("Entity set 'PtsDbContext.Invoice'  is null.");
+                return Problem("Entity set 'PtsDbContext.Customers'  is null.");
             }
-            var invoice = await _context.Invoice.FindAsync(id);
-            if (invoice != null)
+            var customers = await _context.Customers.FindAsync(id);
+            if (customers != null)
             {
-                _context.Invoice.Remove(invoice);
+                _context.Customers.Remove(customers);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InvoiceExists(int id)
+        private bool CustomersExists(int id)
         {
-          return (_context.Invoice?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

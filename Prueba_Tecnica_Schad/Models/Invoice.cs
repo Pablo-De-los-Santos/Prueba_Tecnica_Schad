@@ -10,5 +10,7 @@ namespace Prueba_Tecnica_Schad.Models
         public decimal SubTotal { get; set; }
         public decimal Total { get; set; }
 
-    }
+		public List<InvoiceDetail> InvoiceDetail { get; set; }
+
+	}
 }

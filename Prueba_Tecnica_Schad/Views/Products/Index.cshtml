@@ -37,6 +37,9 @@
 					@foreach (var item in Model)
 					{
 						<tr>
+							@{
+								item.ItbsPercentage = item.ItbsPercentage * 100;
+							}
 							<td>
 								@Html.DisplayFor(modelItem => item.Description)
 							</td>
@@ -44,10 +47,22 @@
 								@Html.DisplayFor(modelItem => item.Price)
 							</td>
 							<td>
-								@Html.DisplayFor(modelItem => item.ItbsPercentage)
+								@Html.DisplayFor(modelItem => item.ItbsPercentage)%
 							</td>
 							<td>
-								@Html.DisplayFor(modelItem => item.IncludesItbis)
+								@{
+									string Mensaje = "";
+									if (item.IncludesItbis)
+									{
+										Mensaje = "Si";
+									}
+									else
+									{
+										Mensaje = "No";
+									}
+								
+								}
+								@Mensaje
 							</td>
 							<td>
 
