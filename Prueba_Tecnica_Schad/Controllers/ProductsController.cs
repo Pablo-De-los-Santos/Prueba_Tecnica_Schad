@@ -23,7 +23,7 @@ namespace Prueba_Tecnica_Schad.Controllers
         public async Task<IActionResult> Index()
         {
         
-              return _context.Products != null ? 
+                return _context.Products != null ? 
                           View(await _context.Products.ToListAsync()) :
                           Problem("Entity set 'PtsDbContext.Products'  is null.");
 

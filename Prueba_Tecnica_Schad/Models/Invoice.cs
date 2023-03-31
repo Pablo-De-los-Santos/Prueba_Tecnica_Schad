@@ -12,5 +12,5 @@ namespace Prueba_Tecnica_Schad.Models
 
 		public List<InvoiceDetail> InvoiceDetail { get; set; }
 
-    }
+	}
 }
